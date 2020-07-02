@@ -1,21 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
-import { ValueComponent } from './value/value.component';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { NavComponent } from './components/nav/nav.component';
+import { ReactiveFormsModule} from '@angular/forms';
+import {HomeComponent} from './components/home/home.component';
+import {RegisterComponent} from './components/register/register.component'
 @NgModule({
-   declarations: [
-      AppComponent,
-      ValueComponent
-   ],
-   imports: [
-      BrowserModule,
-      HttpClientModule
-   ],
-   providers: [],
-   bootstrap: [
-      AppComponent
-   ]
+  declarations: [AppComponent, NavComponent, HomeComponent,RegisterComponent],
+  imports: [BrowserModule, HttpClientModule, ReactiveFormsModule],
+  providers: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

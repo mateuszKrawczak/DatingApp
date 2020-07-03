@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,8 @@ export class RegisterComponent implements OnInit {
   userToRegister: User;
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertifyService:AlertifyService
   ) {}
 
   ngOnInit() {
@@ -27,11 +29,11 @@ export class RegisterComponent implements OnInit {
 
   register(){
     this.userToRegister = this.registerForm.value;
-    console.log(this.userToRegister)
+    this.registerForm.reset();
     this.authService.register(this.userToRegister).subscribe(next=>{
-      console.log("Resgistration successful"); 
+      this.alertifyService.success("Resgistration successful"); 
     }, error=>{
-      console.log("Error");
+      this.alertifyService.error("Incorrect data");
     });
   }
   cancel(){

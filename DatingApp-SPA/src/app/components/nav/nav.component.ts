@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 import { AlertifyService } from '../../services/alertify.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -15,7 +17,8 @@ export class NavComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private alertifyService:AlertifyService
+    private alertifyService:AlertifyService,
+    private router:Router
   ) {}
 
   ngOnInit() {
@@ -34,6 +37,7 @@ export class NavComponent implements OnInit {
     this.authService.login(this.userToLogin).subscribe(data=>{
       localStorage.setItem('token',data.token);
       this.usernameModel=this.authService.getUsername();
+      this.router.navigate(['/members']);
       this.alertifyService.success("Logged in successfully"); 
     }, error=>{
       this.alertifyService.error("Incorrect data");
@@ -44,5 +48,6 @@ export class NavComponent implements OnInit {
   }
   logout(){
     this.authService.logout();
+    this.router.navigate(['/home']);
   }
 }

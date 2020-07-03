@@ -1,4 +1,18 @@
-export interface User{
-    username:string;
-    password:string
+import { Photo } from './photo';
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+  knownAs: string;
+  age: number;
+  gender: number;
+  created: number;
+  lastActive: number;
+  photoUrl: string;
+  city: string;
+  country: string;
+  interests?: string;
+  introduction?: string;
+  lookingFor?: string;
+  photos?: Photo[];
 }

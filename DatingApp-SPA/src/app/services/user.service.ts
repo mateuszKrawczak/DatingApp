@@ -31,4 +31,14 @@ export class UserService {
       ),
     });
   }
+
+  updateUser(id:number, user:User):Observable<any>{
+    return this.http.put(this.host+"api/users/"+id,user,{
+      headers: new HttpHeaders().set(
+        'Authorization',
+        'Bearer '+localStorage.getItem('token')
+      )
+    }
+    )
+  }
 }

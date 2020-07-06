@@ -36,4 +36,12 @@ export class AuthService {
     }
     return null;
   }
+  getId(){
+    const token = localStorage.getItem('token');
+    if(this.loggedIn()){
+      let nameid = jwt_decode(token).nameid;
+      return nameid;
+    }
+    return null;
+  }
 }

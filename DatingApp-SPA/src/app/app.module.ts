@@ -1,3 +1,5 @@
+import { MemberEditResolver } from './resolvers/member-edit.resolver';
+import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MemberCardComponent } from './components/members/member-card/member-card.component';
 import { MemberDetailComponent } from './components/members/member-detail/member-detail.component';
@@ -19,6 +21,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { RouterModule } from '@angular/router';
 import { MemberListResolver } from './resolvers/member-list.resolver';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import{ FormsModule} from '@angular/forms'
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +33,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
     MemberListComponent,
     MemberCardComponent,
     MemberDetailComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -39,12 +43,14 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     TabsModule.forRoot(),
-    NgxGalleryModule
+    NgxGalleryModule,
+    FormsModule
     
   ],
   providers: [
     MemberDetailResolver,
-    MemberListResolver
+    MemberListResolver,
+    MemberEditResolver
   ],
   bootstrap: [AppComponent],
 })

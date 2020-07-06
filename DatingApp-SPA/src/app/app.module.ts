@@ -1,3 +1,4 @@
+import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
 import { MemberEditResolver } from './resolvers/member-edit.resolver';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
@@ -21,7 +22,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { RouterModule } from '@angular/router';
 import { MemberListResolver } from './resolvers/member-list.resolver';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
-import{ FormsModule} from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { FileUploadModule } from 'ng2-file-upload';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +35,8 @@ import{ FormsModule} from '@angular/forms'
     MemberListComponent,
     MemberCardComponent,
     MemberDetailComponent,
-    MemberEditComponent
+    MemberEditComponent,
+    PhotoEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,14 +47,10 @@ import{ FormsModule} from '@angular/forms'
     RouterModule.forRoot(appRoutes),
     TabsModule.forRoot(),
     NgxGalleryModule,
-    FormsModule
-    
+    FormsModule,
+    FileUploadModule,
   ],
-  providers: [
-    MemberDetailResolver,
-    MemberListResolver,
-    MemberEditResolver
-  ],
+  providers: [MemberDetailResolver, MemberListResolver, MemberEditResolver],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

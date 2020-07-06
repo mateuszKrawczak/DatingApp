@@ -13,12 +13,13 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
   userForm: FormGroup;
   userToLogin: User;
-  usernameModel:string=""
+  usernameModel: string = '';
+  photoUrl:string="";
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private alertifyService:AlertifyService,
-    private router:Router
+    private alertifyService: AlertifyService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -26,28 +27,40 @@ export class NavComponent implements OnInit {
       username: [null, Validators.required],
       password: [null, Validators.required],
     });
-    if(this.loggedIn()){
-      this.usernameModel=this.authService.getUsername();
+    if (this.loggedIn()) {
+      this.usernameModel = this.authService.getUsername();
+      this.authService.currentPhotoUrl.subscribe(photoUrl=> this.photoUrl = photoUrl);
     }
+    
   }
 
   login() {
     this.userToLogin = this.userForm.value;
     this.userForm.reset();
-    this.authService.login(this.userToLogin).subscribe(data=>{
-      localStorage.setItem('token',data.token);
-      this.usernameModel=this.authService.getUsername();
-      this.router.navigate(['/members']);
-      this.alertifyService.success("Logged in successfully"); 
-    }, error=>{
-      this.alertifyService.error("Incorrect data");
-    });
+    this.authService.login(this.userToLogin).subscribe(
+      (data) => {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        this.usernameModel = this.authService.getUsername();
+        this.router.navigate(['/members']);
+        this.alertifyService.success('Logged in successfully');
+        //this.photoUrl = this.getMainPhoto();
+        this.authService.changeMemberPhoto(this.photoUrl);
+      },
+      (error) => {
+        this.alertifyService.error('Incorrect data');
+      }
+    );
   }
-  loggedIn(){
+  loggedIn() {
     return this.authService.loggedIn();
   }
-  logout(){
+  logout() {
     this.authService.logout();
     this.router.navigate(['/home']);
+  }
+  getMainPhoto() {
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    return  user.photoUrl;
   }
 }

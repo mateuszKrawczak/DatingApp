@@ -3,45 +3,59 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
-import * as jwt_decode from "jwt-decode";
+import * as jwt_decode from 'jwt-decode';
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   host: string = environment.host;
+  currentUser: User;
+  photoUrl = new BehaviorSubject<string>('../../assets.user.png');
+  currentPhotoUrl = this.photoUrl.asObservable();
+
   constructor(private http: HttpClient) {}
 
+  changeMemberPhoto(photoUrl) {
+    this.photoUrl.next(photoUrl);
+  }
   login(userModel: any): Observable<any> {
-    return this.http.post(this.host + 'api/auth/login', userModel)
+    return this.http.post(this.host + 'api/auth/login', userModel);
   }
 
-  loggedIn(){
+  loggedIn() {
     const token = localStorage.getItem('token');
-    
+
     return token ? jwt_decode(token) : null;
-   // return false;
+    // return false;
   }
-  logout(){
+  logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
-  register(userModel:User):Observable<any>{
-    return this.http.post(this.host+'api/auth/register',userModel);
+  register(userModel: User): Observable<any> {
+    return this.http.post(this.host + 'api/auth/register', userModel);
   }
 
-  getUsername(){
+  getUsername() {
     const token = localStorage.getItem('token');
-    if(this.loggedIn()){
+    if (this.loggedIn()) {
       let username = jwt_decode(token).unique_name;
       return username;
     }
     return null;
   }
-  getId(){
+  getId() {
     const token = localStorage.getItem('token');
-    if(this.loggedIn()){
+    if (this.loggedIn()) {
       let nameid = jwt_decode(token).nameid;
       return nameid;
     }
     return null;
+  }
+  getMainPhoto() {
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    console.log(user);
+    return user.photos[0];
   }
 }

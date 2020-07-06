@@ -24,6 +24,7 @@ import { MemberListResolver } from './resolvers/member-list.resolver';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FormsModule } from '@angular/forms';
 import { FileUploadModule } from 'ng2-file-upload';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +50,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     NgxGalleryModule,
     FormsModule,
     FileUploadModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [MemberDetailResolver, MemberListResolver, MemberEditResolver],
   bootstrap: [AppComponent],

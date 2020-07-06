@@ -10,7 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   host: string = environment.host;
-  currentUser: User;
+  username= new BehaviorSubject<string>('');
+  currentUsername = this.username.asObservable();
   photoUrl = new BehaviorSubject<string>('../../assets.user.png');
   currentPhotoUrl = this.photoUrl.asObservable();
 
@@ -18,6 +19,9 @@ export class AuthService {
 
   changeMemberPhoto(photoUrl) {
     this.photoUrl.next(photoUrl);
+  }
+  changeUsername(username) {
+    this.username.next(username);
   }
   login(userModel: any): Observable<any> {
     return this.http.post(this.host + 'api/auth/login', userModel);
@@ -56,6 +60,9 @@ export class AuthService {
   getMainPhoto() {
     const user: User = JSON.parse(localStorage.getItem('user'));
     console.log(user);
-    return user.photos[0];
+    if(user.photos !=null){
+      return user.photos[0] ;
+    }
+    return this.currentPhotoUrl;
   }
 }

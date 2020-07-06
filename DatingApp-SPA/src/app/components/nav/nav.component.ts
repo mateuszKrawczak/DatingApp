@@ -14,7 +14,7 @@ export class NavComponent implements OnInit {
   userForm: FormGroup;
   userToLogin: User;
   usernameModel: string = '';
-  photoUrl:string="";
+  photoUrl: string = '';
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -27,11 +27,19 @@ export class NavComponent implements OnInit {
       username: [null, Validators.required],
       password: [null, Validators.required],
     });
-    if (this.loggedIn()) {
-      this.usernameModel = this.authService.getUsername();
-      this.authService.currentPhotoUrl.subscribe(photoUrl=> this.photoUrl = photoUrl);
+
+    this.usernameModel = this.authService.getUsername();
+    // this.authService.currentUsername.subscribe((usernameModel)=>{
+    //  this.usernameModel = usernameModel;
+    // });
+    if (this.authService.loggedIn()) {
+      this.authService.currentPhotoUrl.subscribe(
+     (photoUrl) => (this.photoUrl = photoUrl)
+      );
+     if(this.authService.loggedIn())
+     this.photoUrl = this.getMainPhoto();
+     this.usernameModel =this.authService.getUsername();
     }
-    
   }
 
   login() {
@@ -44,8 +52,9 @@ export class NavComponent implements OnInit {
         this.usernameModel = this.authService.getUsername();
         this.router.navigate(['/members']);
         this.alertifyService.success('Logged in successfully');
-        //this.photoUrl = this.getMainPhoto();
+        this.photoUrl = this.getMainPhoto();
         this.authService.changeMemberPhoto(this.photoUrl);
+        this.usernameModel = this.authService.getUsername();
       },
       (error) => {
         this.alertifyService.error('Incorrect data');
@@ -61,6 +70,6 @@ export class NavComponent implements OnInit {
   }
   getMainPhoto() {
     const user: User = JSON.parse(localStorage.getItem('user'));
-    return  user.photoUrl;
+    return user.photoUrl;
   }
 }

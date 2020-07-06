@@ -25,6 +25,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FormsModule } from '@angular/forms';
 import { FileUploadModule } from 'ng2-file-upload';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimeagoModule } from 'ngx-timeago';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +51,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     NgxGalleryModule,
     FormsModule,
     FileUploadModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    TimeagoModule.forRoot(),
   ],
   providers: [MemberDetailResolver, MemberListResolver, MemberEditResolver],
   bootstrap: [AppComponent],

@@ -28,6 +28,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimeagoModule } from 'ngx-timeago';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { ListsResolver } from './resolvers/lists.resolver';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +59,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     PaginationModule.forRoot(),
     ButtonsModule.forRoot()
   ],
-  providers: [MemberDetailResolver, MemberListResolver, MemberEditResolver],
+  providers: [MemberDetailResolver, MemberListResolver, MemberEditResolver, ListsResolver],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

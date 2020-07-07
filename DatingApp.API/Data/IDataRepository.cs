@@ -12,5 +12,7 @@ namespace DatingApp.API.Data
          Task<User> GetUser(int id);
          Task<bool> SaveAll();
          Task<PagedList<User>> GetUsers(UserParams userParams);
+
+         Task<Like> GetLike(int userId, int recipientId);
     }
 }

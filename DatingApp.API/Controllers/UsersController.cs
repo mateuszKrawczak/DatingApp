@@ -6,6 +6,7 @@ using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Helpers;
+using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +36,8 @@ namespace DatingApp.API.Controllers
 
             userParams.UserId = currentUserId;
 
-            if(string.IsNullOrEmpty(userParams.Gender)){
+            if (string.IsNullOrEmpty(userParams.Gender))
+            {
                 userParams.Gender = userFromRepo.Gender == "male" ? "female" : "male";
             }
 
@@ -47,7 +49,7 @@ namespace DatingApp.API.Controllers
 
             return Ok(usersToReturn);
         }
-        [HttpGet("{id}",Name="GetUser")]
+        [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _usersRepo.GetUser(id);
@@ -70,9 +72,37 @@ namespace DatingApp.API.Controllers
             _mapper.Map(userForUpdatesDto, userFromRepo);
 
             if (await _usersRepo.SaveAll())
-               return NoContent();
+                return NoContent();
 
             throw new Exception($"Updating user with id {id} failed on save");
+        }
+
+        [HttpPost("{id}/like/{recipientId}")]
+        public async Task<IActionResult> LikeUser(int id, int recipientId)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var like = await _usersRepo.GetLike(id, recipientId);
+
+            if (like != null)
+                return BadRequest("You already like this user");
+
+            if (await _usersRepo.GetUser(recipientId) == null)
+                return NotFound();
+
+            like = new Like
+            {
+                LikerId = id,
+                LikeeId = recipientId
+            };
+
+            _usersRepo.Add<Like>(like);
+
+            if (await _usersRepo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to like user");
         }
     }
 }

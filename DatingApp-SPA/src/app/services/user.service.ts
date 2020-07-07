@@ -17,7 +17,8 @@ export class UserService {
   getUsers(
     page?,
     itemsPerPage?,
-    userParams?
+    userParams?,
+    likesParam?
   ): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
       User[]
@@ -33,7 +34,15 @@ export class UserService {
       params = params.append('minAge', userParams.minAge);
       params = params.append('maxAge', userParams.maxAge);
       params = params.append('gender', userParams.gender);
-      params = params.append('orderBy', userParams.orderBy)
+      params = params.append('orderBy', userParams.orderBy);
+    }
+
+    if (likesParam === 'Likers') {
+      params = params.append('likers', 'true');
+    }
+
+    if (likesParam === 'Likees') {
+      params = params.append('likees', 'true');
     }
 
     return this.http
@@ -73,5 +82,18 @@ export class UserService {
         'Bearer ' + localStorage.getItem('token')
       ),
     });
+  }
+
+  sendLike(id: number, recpientId: number): Observable<any> {
+    return this.http.post(
+      this.host + 'api/users/' + id + '/like/' + recpientId,
+      {},
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          'Bearer ' + localStorage.getItem('token')
+        ),
+      }
+    );
   }
 }

@@ -1,3 +1,4 @@
+import { ListsResolver } from './resolvers/lists.resolver';
 import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { Routes } from '@angular/router';
@@ -27,7 +28,7 @@ export const appRoutes: Routes = [
         component: MemberDetailComponent,
         resolve: { user: MemberDetailResolver },
       },
-      { path: 'lists', component: ListsComponent },
+      { path: 'lists', component: ListsComponent ,resolve:{users: ListsResolver}},
       { path: 'messages', component: MessagesComponent },
       {
         path: 'member/edit',

@@ -15,22 +15,27 @@ namespace DatingApp.API.Helpers
             .ForMember(dest => dest.Age, opt => opt.MapFrom(src => DatetimeToAge.CalculateAge(src.DateOfBirth)));
             CreateMap<User, UserForDetailsDto>()
             .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url))
-            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => DatetimeToAge.CalculateAge(src.DateOfBirth))); 
+            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => DatetimeToAge.CalculateAge(src.DateOfBirth)));
             CreateMap<Photo, PhotosForDetailsDto>();
-
             CreateMap<UserForUpdatesDto, User>();
-
             CreateMap<UserForRegisterDto, User>();
+            CreateMap<MessageForCreationDto, Message>();
+            CreateMap<Message, MessageForCreationDto>();
+            CreateMap<Message, MessageToReturnDto>()
+            .ForMember(m => m.SenderPhotoUrl, opt => opt.MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
+            .ForMember(m => m.RecipientPhotoUrl, opt => opt.MapFrom(u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
         }
 
 
-        
+
     }
-    public static class DatetimeToAge{
-        public static int CalculateAge(this DateTime date){
+    public static class DatetimeToAge
+    {
+        public static int CalculateAge(this DateTime date)
+        {
             var age = DateTime.Today.Year - date.Year;
             return age;
         }
     }
-    
+
 }

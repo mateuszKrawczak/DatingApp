@@ -1,3 +1,5 @@
+import { MemberMessagesComponent } from './components/members/member-messages/member-messages.component';
+import { MessagesResolver } from './resolvers/messages.resolver';
 import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
 import { MemberEditResolver } from './resolvers/member-edit.resolver';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
@@ -42,6 +44,7 @@ import { ListsResolver } from './resolvers/lists.resolver';
     MemberDetailComponent,
     MemberEditComponent,
     PhotoEditorComponent,
+    MemberMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,7 @@ import { ListsResolver } from './resolvers/lists.resolver';
     PaginationModule.forRoot(),
     ButtonsModule.forRoot()
   ],
-  providers: [MemberDetailResolver, MemberListResolver, MemberEditResolver, ListsResolver],
+  providers: [MemberDetailResolver, MemberListResolver, MemberEditResolver, ListsResolver, MessagesResolver],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

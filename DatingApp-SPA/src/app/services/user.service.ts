@@ -1,3 +1,4 @@
+import { Message } from './../models/message';
 import { PaginatedResult } from './../models/pagination';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -88,6 +89,71 @@ export class UserService {
     return this.http.post(
       this.host + 'api/users/' + id + '/like/' + recpientId,
       {},
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          'Bearer ' + localStorage.getItem('token')
+        ),
+      }
+    );
+  }
+
+  getMessages(
+    id: number,
+    page?,
+    itemsPerPage?,
+    messageContainer?
+  ): Observable<PaginatedResult<Message[]>> {
+    const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<
+      Message[]
+    >();
+
+    let params = new HttpParams();
+
+    params = params.append('MessageContainer', messageContainer);
+
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    return this.http
+      .get<Message[]>(this.host + 'api/users/' + id + '/messages', {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          'Bearer ' + localStorage.getItem('token')
+        ),
+        observe: 'response',
+        params,
+      })
+      .pipe(
+        map((res) => {
+          paginatedResult.result = res.body;
+          if (res.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(
+              res.headers.get('Pagination')
+            );
+          }
+          return paginatedResult;
+        })
+      );
+  }
+
+  getMessagesThread(id: number, recipientId: number): Observable<Message[]> {
+    return this.http.get<Message[]>(
+      this.host + 'api/users/' + id + '/messages/thread/' + recipientId,
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          'Bearer ' + localStorage.getItem('token')
+        ),
+      }
+    );
+  }
+  sendMessage(id: number, message: Message): Observable<Message> {
+    return this.http.post<Message>(
+      this.host + 'api/users/' + id + '/messages',
+      message,
       {
         headers: new HttpHeaders().set(
           'Authorization',

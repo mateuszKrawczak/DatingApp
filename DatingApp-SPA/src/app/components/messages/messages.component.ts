@@ -52,4 +52,24 @@ export class MessagesComponent implements OnInit {
     this.pagination.currentPage = event.page;
     this.loadMessages();
   }
+
+  deleteMessage(id: number) {
+    this.alertifyService.confirm(
+      'Are you sure you want to delete this message',
+      () => {
+        this.userService.deleteMessage(id, this.authService.getId()).subscribe(
+          () => {
+            this.messages.splice(
+              this.messages.findIndex((m) => m.id === id),
+              1
+            );
+            this.alertifyService.success('Message deleted');
+          },
+          (error) => {
+            this.alertifyService.error('Failed to delete message');
+          }
+        );
+      }
+    );
+  }
 }

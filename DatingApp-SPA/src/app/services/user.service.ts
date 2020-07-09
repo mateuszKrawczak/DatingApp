@@ -162,4 +162,30 @@ export class UserService {
       }
     );
   }
+
+  deleteMessage(id: number, userId: number): Observable<any> {
+    return this.http.post(
+      this.host + 'api/users/' + userId + '/messages/' + id,
+      {},
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          'Bearer ' + localStorage.getItem('token')
+        ),
+      }
+    );
+  }
+
+  markAsRead(userId: number, messageId: number):Observable<any> {
+    return this.http.post(
+      this.host + 'api/users/' + userId + '/messages/' + messageId + '/read',
+      {},
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          'Bearer ' + localStorage.getItem('token')
+        ),
+      }
+    );
+  }
 }
